@@ -19,6 +19,3 @@ class Hello(Resource):
 
 # Add Defined Resource & Corresponding Urls
 api.add_resource(Hello, "/")
-
-if __name__ == "__main__":
-    app.run()
