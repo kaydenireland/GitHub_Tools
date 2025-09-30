@@ -29,4 +29,3 @@ class Trending(Resource):
 api.add_resource(Hello, "/")
 api.add_resource(Trending, "/trending/")
 
-app.run()
