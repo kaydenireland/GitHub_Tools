@@ -1,0 +1,18 @@
+{
+  "username": "",
+  "token": "",
+
+  "minimum_percentage": 0.005,
+
+  "use_data": "new",
+  "json_save_path": "output.json",
+
+  "chart_type": "donut",
+  "donut_hole_width": 0.3,
+
+
+  "output_option": "save",
+  "image_save_path": "chart.png",
+
+  "theme": "default"
+}

@@ -3,3 +3,6 @@
 
 trending_repos/*.json
 trending_repos/*.txt
+
+top_langs/output.json
+top_langs/*.png
