@@ -13,7 +13,7 @@ import sys
 def get_base_directory():
     return Path(__file__).resolve().parent
 
-def fetch_new_langs(username: str, save_path: str, token : str=None):
+def fetch_new_langs(username: str, save_path: str = None, token : str=None):
     headers = {"Authorization": f"token {token}"} if token else {}
     lang_totals = defaultdict(int)
     page = 1
@@ -42,8 +42,9 @@ def fetch_new_langs(username: str, save_path: str, token : str=None):
 def save_to_json(lang_data: dict, save_path: str):
     file_name = save_path
 
-    with open(file_name, 'w') as f:
-        json.dump(lang_data, f, indent=4)
+    if save_path:
+        with open(file_name, 'w') as f:
+            json.dump(lang_data, f, indent=4)
 
 def load_from_json(path: str):
     if path:
