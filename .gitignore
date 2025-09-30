@@ -1,0 +1,5 @@
+.venv
+.idea
+
+trending_repos/*.json
+trending_repos/*.txt
