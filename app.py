@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, send_file
 from flask_restful import Resource, Api
 from trending_repos import scraper
+from top_langs import repo_lang_analysis
 from pathlib import Path
 import io
 
@@ -23,10 +24,41 @@ class Trending(Resource):
         repos = scraper.get_repos(lang)
         return jsonify([repo.to_dict() for repo in repos])
 
+class RepoTopLangs(Resource):
+
+    def get(self, username):
+        # Fetch Lang Returns Dict
+        lang_data = repo_lang_analysis.fetch_new_langs(username)
+
+        chart_type = request.args.get("chart", "donut") # pie, donut, vbar, hbar, stacked
+        output_type = request.args.get("output", "json") # json, graph
+
+        if output_type == "json":
+            return jsonify(lang_data)
+
+        elif output_type == "graph":
+            cfp = Path(__file__).resolve().parent / "top_langs" / "lang_colors.json"
+            print(cfp)
+            fig, _ = repo_lang_analysis.create_chart(
+                chart_type,
+                username,
+                lang_data,
+                minimum_percentage = .005,
+                dh_width = .3,
+                color_file_path = cfp
+            )
+
+            fig_io = io.BytesIO()
+            fig.savefig(fig_io, format = "PNG", bbox_inches = "tight")
+            fig_io.seek(0)
+            return send_file(fig_io, mimetype = "image/png")
+
+        else:
+            return {"error", "Invalid Output Type"}, 400
+
 
 
 # Add Defined Resource & Corresponding Urls
 api.add_resource(Hello, "/")
 api.add_resource(Trending, "/trending/")
-
-app.run()
+api.add_resource(RepoTopLangs, "/toplangs/repo/<string:username>")
